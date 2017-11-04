@@ -2,6 +2,11 @@
 10.19
 Added code to write into the class of the cards. Need to find a way to loop through each possibly "this"
 
+10.31 .hasclass() may be the key.
+
+11.1 
+Able to to get clicked classes into a variable but it's a string where do you go to next?
+Got the Cards into an array! Yay!
 
 */
 
@@ -11,6 +16,9 @@ Added code to write into the class of the cards. Need to find a way to loop thro
  * Create a list that holds all of your cards
  */
 let deck = ['fa fa-diamond', 'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-bolt', 'fa fa-cube', 'fa fa-cube', 'fa fa-leaf', 'fa fa-leaf', 'fa fa-bomb', 'fa fa-bomb', 'fa fa-bicycle', 'fa fa-bicycle']
+let moves = 0
+let openCard = [];
+let openedCards = [];
 
 let cards = $(".card").children()
 
@@ -51,13 +59,33 @@ function shuffle(array) {
 
 // Listener Function
 
+function checkMatch() {
+
+}
 
 
 function cardClick() {
     card = $('.card')
     $(card).click(function() {
         $(this).attr('class', 'card open show remove');
+        openCard = $(this).children().prop("class"); //Creates List that I can compare! 
+        openCard += openedCards.push(openCard)
+        console.log(openCard)
+            //console.log(openedCards)
+        if (openedCards.length == 2) {
+            $(".moves").text(moves += 1)
+            if (openedCards[0] == openedCards[1]) {
+                console.log(`It's a match!`)
+                $(".open").attr('class', 'card show match remove');
+                openedCards = [];
+            } else {
+                console.log(`It's not a match`)
+                $(".open").attr('class', 'card remove')
+                openedCards = [];
+            }
+        }
     });
+
 }
 
 cardClick()
@@ -68,11 +96,6 @@ function newCards() {
     $(".remove").remove();
     for (var i = 0; i < deck.length; i++) {
         newCard += `<li class="card remove"><i class="${deck[i]} remove"></i></li>`;
-
-
-        /*decks = deck[i]
-        cards.attr('class', decks);*/
-
     }
 
     $(".deck").append(newCard)
