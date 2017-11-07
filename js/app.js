@@ -8,6 +8,9 @@ Added code to write into the class of the cards. Need to find a way to loop thro
 Able to to get clicked classes into a variable but it's a string where do you go to next?
 Got the Cards into an array! Yay!
 
+11.4 need to add animation and scoring! Everything else is working!
+
+
 */
 
 
@@ -58,9 +61,29 @@ function shuffle(array) {
  */
 
 // Listener Function
+function noMatch() {
+    $(".open").attr('class', 'no-match card remove open show');
+    openedCards = [];
+}
+
+function resetCard() {
+    $(".no-match").attr('class', 'card remove');
+}
 
 function checkMatch() {
-
+    if (openedCards.length == 2) {
+        $(".moves").text(moves += 1)
+        if (openedCards[0] == openedCards[1]) {
+            console.log(`It's a match!`)
+            $(".open").attr('class', 'card show match remove');
+            openedCards = [];
+        } else {
+            console.log(`It's not a match`);
+            noMatch();
+            setTimeout(function() { resetCard(); }, 1000)
+            openedCards = [];
+        }
+    }
 }
 
 
@@ -71,19 +94,7 @@ function cardClick() {
         openCard = $(this).children().prop("class"); //Creates List that I can compare! 
         openCard += openedCards.push(openCard)
         console.log(openCard)
-            //console.log(openedCards)
-        if (openedCards.length == 2) {
-            $(".moves").text(moves += 1)
-            if (openedCards[0] == openedCards[1]) {
-                console.log(`It's a match!`)
-                $(".open").attr('class', 'card show match remove');
-                openedCards = [];
-            } else {
-                console.log(`It's not a match`)
-                $(".open").attr('class', 'card remove')
-                openedCards = [];
-            }
-        }
+        checkMatch();
     });
 
 }
@@ -103,11 +114,14 @@ function newCards() {
 
 function shuffleDeck() {
     reset = $('.restart');
+
     $(reset).click(function() {
         alert(`You shuffled the deck!`)
         shuffle(deck);
         newCards();
         cardClick();
+        moves = 0;
+        $(".moves").text(moves)
     });
 }
 shuffleDeck();
